@@ -9,11 +9,14 @@ const Person = ({ name }) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: 'penis', id: 1 }])
+  const [persons, setPersons] = useState([{ name: 'test name', id: 1 }])
   const [newName, setNewName] = useState('')
 
   const addPerson = (event) => {
     event.preventDefault()
+    if (nameExists) {
+      return alert(`${newName} exists in phonebook`)
+    }
     const personObject = {
       name: newName,
       id: persons.length + 1,
@@ -26,11 +29,17 @@ const App = () => {
     setNewName(event.target.value)
   }
 
+  const nameExists = () => {
+    return persons.find((person) => newName === person.name)
+  }
+
   return (
     <div>
+      <p>2.7</p>
       <h2>Phonebook</h2>
       <form>
         <div>
+          name:
           <input value={newName} onChange={handleInputChange} />
         </div>
         <div>
@@ -40,7 +49,6 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {/*need a key for below*/}
       {persons.map((person) => (
         <Person key={person.id} name={person.name} />
       ))}
