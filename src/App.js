@@ -9,7 +9,7 @@ const Person = ({ name }) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: 'penis', id: 1 }])
+  const [persons, setPersons] = useState([{ name: 'test name', id: 1 }])
   const [newName, setNewName] = useState('')
 
   const addPerson = (event) => {
@@ -28,6 +28,7 @@ const App = () => {
 
   return (
     <div>
+      <p>2.6</p>
       <h2>Phonebook</h2>
       <form>
         <div>
