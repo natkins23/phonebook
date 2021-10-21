@@ -1,19 +1,61 @@
 import React, { useState } from 'react'
 
+const Header = ({ text }) => {
+  return (
+    <>
+      <h2>{text}</h2>
+    </>
+  )
+}
+
+const Filter = ({ value, onChange }) => {
+  return (
+    <>
+      <div>
+        filter shown with
+        <input value={value} onChange={onChange} />
+      </div>
+    </>
+  )
+}
+const PersonForm = ({ name, nameChange, number, numberChange, addPerson }) => {
+  return (
+    <>
+      <form>
+        <div>
+          <div>
+            name: <input value={name} onChange={nameChange} />
+          </div>
+          <div>
+            number: <input value={number} onChange={numberChange} />
+          </div>
+        </div>
+        <div>
+          <button onClick={addPerson} type='submit'>
+            add
+          </button>
+        </div>
+      </form>
+    </>
+  )
+}
+
+const Persons = ({ persons }) => {
+  return (
+    <>
+      {persons.map((person) => (
+        <Person key={person.id} name={person.name} number={person.number} />
+      ))}
+    </>
+  )
+}
+
 const Person = ({ name, number }) => {
   return (
     <>
       <div>
         {name} {number}
       </div>
-    </>
-  )
-}
-
-const Header = ({ text }) => {
-  return (
-    <>
-      <h2>{text}</h2>
     </>
   )
 }
@@ -68,40 +110,32 @@ const App = () => {
     <div>
       <p>2.10</p>
       <Header text='Phonebook' />
-      <div>
-        filter shown with
-        <input value={newFilter} onChange={handleFilterChange} />
-      </div>
+      <Filter name={newFilter} nameChange={handleFilterChange} />
 
       <Header text='add a new' />
+      <PersonForm
+        name={newName}
+        nameChange={handleNameInputChange}
+        number={newNumber}
+        numberChange={handleNumberInputChange}
+        addPerson={addPerson}
+      />
 
-      <form>
-        <div>
-          <div>
-            name: <input value={newName} onChange={handleNameInputChange} />
-          </div>
-          <div>
-            number:{' '}
-            <input value={newNumber} onChange={handleNumberInputChange} />
-          </div>
-        </div>
-        <div>
-          <button onClick={addPerson} type='submit'>
-            add
-          </button>
-        </div>
-      </form>
       <Header text='Numbers' />
-      {peopleToShow.map((person) => (
-        <Person key={person.id} name={person.name} number={person.number} />
-      ))}
+      <Persons persons={peopleToShow} />
     </div>
   )
 }
 
 export default App
 
-/* 2.6 what do i need to do?
+/* 2.7-2.9 filter was the hardest part
+
+
+
+
+
+2.6 what do i need to do?
 1)display the name of the persons objects under numbers
 2)be able to add to the persons array from input of the form
 
