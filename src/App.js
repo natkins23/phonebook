@@ -8,12 +8,12 @@ const Header = ({ text }) => {
   )
 }
 
-const Filter = ({ value, onChange }) => {
+const Filter = ({ filter, filterChange }) => {
   return (
     <>
       <div>
         filter shown with
-        <input value={value} onChange={onChange} />
+        <input value={filter} onChange={filterChange} />
       </div>
     </>
   )
@@ -110,7 +110,7 @@ const App = () => {
     <div>
       <p>2.10</p>
       <Header text='Phonebook' />
-      <Filter name={newFilter} nameChange={handleFilterChange} />
+      <Filter filter={newFilter} filterChange={handleFilterChange} />
 
       <Header text='add a new' />
       <PersonForm
@@ -129,10 +129,9 @@ const App = () => {
 
 export default App
 
-/* 2.7-2.9 filter was the hardest part
+/*2.10 extracting components from application (copy and paste essentailly with prop renaming)
 
-
-
+2.7-2.9 filter was the hardest part
 
 
 2.6 what do i need to do?
