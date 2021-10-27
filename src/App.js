@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+// import noteService from './services/notes'
+import * as noteService from './services/persons'
 
 const Header = ({ text }) => {
   return (
@@ -91,9 +93,8 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     }
-    axios
-      .post('http://localhost:3001/persons', personObject)
-      .then((response) => console.log(response))
+    //2.15 addition
+    noteService.create(personObject)
     setPersons(persons.concat(personObject))
     setNewName('')
     setNewNumber('')
@@ -116,7 +117,7 @@ const App = () => {
 
   return (
     <div>
-      <p>2.15</p>
+      <p>2.16</p>
       <Header text='Phonebook' />
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
