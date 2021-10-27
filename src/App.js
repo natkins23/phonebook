@@ -91,6 +91,9 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     }
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then((response) => console.log(response))
     setPersons(persons.concat(personObject))
     setNewName('')
     setNewNumber('')
@@ -113,7 +116,7 @@ const App = () => {
 
   return (
     <div>
-      <p>2.11</p>
+      <p>2.15</p>
       <Header text='Phonebook' />
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
