@@ -43,25 +43,16 @@ const PersonForm = ({ name, nameChange, number, numberChange, addPerson }) => {
   )
 }
 
-const Persons = ({ persons }) => {
+//refactored Persons and Person component into a single Person component
+const Person = ({ persons }) => {
   return (
-    <>
-      {persons.map((person) => (
-        <Person key={person.id} name={person.name} number={person.number} />
-      ))}
-    </>
+      persons.map(person => (
+        <p key={person.id}> {person.name} {person.number} 
+        </p>
+      ))
   )
 }
 
-const Person = ({ name, number }) => {
-  return (
-    <>
-      <div>
-        {name} {number}
-      </div>
-    </>
-  )
-}
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -78,6 +69,8 @@ const App = () => {
     promise.then(eventHandler)
   }
   useEffect(hook, [])
+
+  
   const peopleToShow =
     newFilter.length > 0
       ? persons.filter((person) => person.name.includes(newFilter))
@@ -117,7 +110,7 @@ const App = () => {
 
   return (
     <div>
-      <p>2.16</p>
+      <p>2.17</p>
       <Header text='Phonebook' />
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
