@@ -73,7 +73,7 @@ const App = () => {
 
   return (
     <div>
-      <p>2.17</p>
+      <p>2.17 - delete button</p>
       <h2> Phonebook </h2>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
