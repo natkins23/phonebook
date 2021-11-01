@@ -25,6 +25,9 @@ export const create = (newObject) => axios.post(baseUrl, newObject)
 export const update = (id, newObject) =>
   axios.put(`${baseUrl}/${id}`, newObject)
 
+export const deletePersron = id =>
+axios.delete(`${baseUrl}/${id}`)
+
 //put in app.js
 //import * as notService from './services.persons'
 

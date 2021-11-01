@@ -1,57 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-// import noteService from './services/notes'
-import * as noteService from './services/persons'
-
-const Header = ({ text }) => {
-  return (
-    <>
-      <h2>{text}</h2>
-    </>
-  )
-}
-
-const Filter = ({ filter, filterChange }) => {
-  return (
-    <>
-      <div>
-        filter shown with
-        <input value={filter} onChange={filterChange} />
-      </div>
-    </>
-  )
-}
-const PersonForm = ({ name, nameChange, number, numberChange, addPerson }) => {
-  return (
-    <>
-      <form>
-        <div>
-          <div>
-            name: <input value={name} onChange={nameChange} />
-          </div>
-          <div>
-            number: <input value={number} onChange={numberChange} />
-          </div>
-        </div>
-        <div>
-          <button onClick={addPerson} type='submit'>
-            add
-          </button>
-        </div>
-      </form>
-    </>
-  )
-}
-
-//refactored Persons and Person component into a single Person component
-const Person = ({ persons }) => {
-  return (
-      persons.map(person => (
-        <p key={person.id}> {person.name} {person.number} 
-        </p>
-      ))
-  )
-}
+import * as personService from './services/persons'
+import Persons from './components/Persons'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 
 
 const App = () => {
@@ -70,7 +22,6 @@ const App = () => {
   }
   useEffect(hook, [])
 
-  
   const peopleToShow =
     newFilter.length > 0
       ? persons.filter((person) => person.name.includes(newFilter))
@@ -86,17 +37,29 @@ const App = () => {
       number: newNumber,
       id: persons.length + 1,
     }
+  
     //2.15 addition
-    noteService.create(personObject)
+    personService.create(personObject)
     setPersons(persons.concat(personObject))
     setNewName('')
     setNewNumber('')
+  }//end addPerson
+  
+  const removePerson = (id) =>{
+    const personToDelete = persons.find(person => person.id = id)
+ 
+    const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
+    if(result){
+    personService.deletePersron(id)
+    setPersons(persons.filter(person =>person.id!=id))
   }
+}
+  
 
   const handleNameInputChange = (event) => {
     setNewName(event.target.value)
   }
-
+  
   const handleNumberInputChange = (event) => {
     setNewNumber(event.target.value)
   }
@@ -111,10 +74,10 @@ const App = () => {
   return (
     <div>
       <p>2.17</p>
-      <Header text='Phonebook' />
+      <h2> Phonebook </h2>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
-      <Header text='add a new' />
+      <h2> add a new </h2> 
       <PersonForm
         name={newName}
         nameChange={handleNameInputChange}
@@ -122,16 +85,29 @@ const App = () => {
         numberChange={handleNumberInputChange}
         addPerson={addPerson}
       />
-
-      <Header text='Numbers' />
-      <Persons persons={peopleToShow} />
+      <h2> Numbers </h2> 
+      <Persons 
+        persons={peopleToShow}  
+        removePerson = {removePerson}
+        />
     </div>
   )
 }
 
 export default App
 
-/*2.11 - fetching data using axios
+
+
+
+/* 2.17 precursor
+-moved components into components folder
+--note: you should probably not be exporting multiple components from a single component file, just bad form
+-refactored to remove unnecessary header and person component
+2.17 delete btn
+
+
+
+2.11 - fetching data using axios
 1)setup the db.json with the json data
 2) install axios and db server and run the server
 3) import axios
