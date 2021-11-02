@@ -1,5 +1,3 @@
-import React from 'react'
-
 const Persons = ({ persons, removePerson }) => {
   return (
     persons.map(person=>

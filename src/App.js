@@ -14,7 +14,6 @@ const App = () => {
 
   const hook = () => {
     const eventHandler = (response) => {
-      console.log(response)
       setPersons(response.data)
     }
     const promise = axios.get('http://localhost:3001/persons')
@@ -27,11 +26,24 @@ const App = () => {
       ? persons.filter((person) => person.name.includes(newFilter))
       : persons
 
+  //2.18 changes-updating existing person with new add
   const addPerson = (event) => {
     event.preventDefault()
     if (nameExists()) {
-      return alert(`${newName} exists in phonebook`)
+      const result = window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`)
+      const personToUpdate = persons.find(person=>person.name ===newName)
+        //there is a way to use the spread operator
+      if (result){
+        const personObject = {
+          name: newName,
+          number: newNumber,
+          id: personToUpdate.id,
+        }
+        personService.update(personToUpdate.id,personObject)
+      }
     }
+  
+    else{
     const personObject = {
       name: newName,
       number: newNumber,
@@ -41,9 +53,12 @@ const App = () => {
     //2.15 addition
     personService.create(personObject)
     setPersons(persons.concat(personObject))
+  }
     setNewName('')
     setNewNumber('')
   }//end addPerson
+
+ 
   
   const removePerson = (id) =>{
     const personToDelete = persons.find(person => person.id = id)
@@ -51,7 +66,7 @@ const App = () => {
     const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
     if(result){
     personService.deletePersron(id)
-    setPersons(persons.filter(person =>person.id!=id))
+    setPersons(persons.filter(person =>person.id!==id))
   }
 }
   
@@ -73,7 +88,7 @@ const App = () => {
 
   return (
     <div>
-      <p>2.17</p>
+      <p>2.18 - replace existing people</p>
       <h2> Phonebook </h2>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 

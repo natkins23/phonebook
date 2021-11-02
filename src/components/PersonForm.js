@@ -1,5 +1,3 @@
-import react from 'react'
-
   const PersonForm = ({ name, nameChange, number, numberChange, addPerson }) => {
     return (
       <>
