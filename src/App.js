@@ -5,6 +5,8 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
+//need to change addPerson so when i create a new Object that its not based off the lenght of the personObject, this is obsolete
+//also need to figure out why multiple persons are being deleted, it could be that they share the same id?
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -14,7 +16,6 @@ const App = () => {
 
   const hook = () => {
     const eventHandler = (response) => {
-      console.log(response)
       setPersons(response.data)
     }
     const promise = axios.get('http://localhost:3001/persons')
@@ -35,9 +36,9 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     }
   
+    //missing .then
     //2.15 addition
     personService.create(personObject)
     setPersons(persons.concat(personObject))
@@ -51,7 +52,7 @@ const App = () => {
     const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
     if(result){
     personService.deletePersron(id)
-    setPersons(persons.filter(person =>person.id!=id))
+    setPersons(persons.filter(person =>person.id!==id))
   }
 }
   
