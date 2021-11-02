@@ -37,7 +37,6 @@ const App = () => {
         const personObject = {
           name: newName,
           number: newNumber,
-          id: personToUpdate.id,
         }
         personService.update(personToUpdate.id,personObject)
       }
