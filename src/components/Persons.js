@@ -1,8 +1,7 @@
 const Persons = ({ persons, removePerson }) => {
-  persons.map(person=> console.log(persons,person.name,person.id))
+
   return (
     persons.map(person=>
-      
       <p key={person.id}>
         {person.name} {person.number} 
         <button onClick={() => removePerson(person.id)}>delete</button>
@@ -12,19 +11,3 @@ const Persons = ({ persons, removePerson }) => {
 }
 
 export default Persons
-
-
-  // //Why is this below example broken?
-  // const Persons = ({ persons,deletePerson }) => {
-  //   return (
-  //     <>
-  //       persons.map(person =>
-  //         <p key={person.id}> {person.name} {person.number} 
-  //         </p>
-  //         <button onClick = {()=>deletePerson(person.id)}>delete</button>
-  //       ))
-  //       </>
-  //   )
-  // }
-  
-  // export default Persons

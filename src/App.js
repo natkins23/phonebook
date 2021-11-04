@@ -30,23 +30,27 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (nameExists()) {
+
+    //returns first element or undefined
+    const existingPerson = persons.find(person => newName === person.name)
+    
+  
+    if (existingPerson) {
       return alert(`${newName} exists in phonebook`)
     }
-    const personObject = {
+    personService.create({
       name: newName,
-      number: newNumber,
-    }
-  
-    //missing .then
-    //2.15 addition
-    personService.create(personObject)
-    setPersons(persons.concat(personObject))
+      number: newNumber   
+    }).then(addedPerson => {
+      setPersons(persons.concat(addedPerson))
+      })
+
     setNewName('')
     setNewNumber('')
   }//end addPerson
   
   const removePerson = (id) =>{
+    console.log(persons)
     const personToDelete = persons.find(person => person.id = id)
  
     const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
@@ -68,10 +72,7 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const nameExists = () => {
-    return persons.find((person) => newName === person.name)
-  }
-
+ 
   return (
     <div>
       <p>2.17 - delete button</p>
