@@ -91,11 +91,11 @@ const App = () => {
     const personObject = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
     }
-    //2.15 addition
-    noteService.create(personObject)
-    setPersons(persons.concat(personObject))
+    
+    noteService.create(personObject).then(addedPerson=>
+    setPersons(persons.concat(addedPerson))
+    )
     setNewName('')
     setNewNumber('')
   }
