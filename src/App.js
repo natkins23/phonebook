@@ -35,16 +35,26 @@ const App = () => {
     //returns first element or undefined
     const existingPerson = persons.find(person => newName === person.name)
     
-  
+    //updated with 2.18 - update existing contact
     if (existingPerson) {
-      return alert(`${newName} exists in phonebook`)
-    }
-    personService.create({
-      name: newName,
-      number: newNumber   
-    }).then(addedPerson => {
-      setPersons(persons.concat(addedPerson))
-      })
+      const result = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
+      if (result){
+        personService.update(existingPerson.id,{
+          name: existingPerson.name,
+          number: newNumber   
+        }).then(addedPerson => {
+          setPersons(persons.map(person=>person.id !==existingPerson.id? person : addedPerson))
+          })
+      }
+      } else{
+        personService.create({
+          name: newName,
+          number: newNumber   
+        }).then(addedPerson => {
+          setPersons(persons.concat(addedPerson))
+          })
+      }
+
 
     setNewName('')
     setNewNumber('')
