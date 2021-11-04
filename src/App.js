@@ -5,6 +5,8 @@ import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 
+//need to change addPerson so when i create a new Object that its not based off the lenght of the personObject, this is obsolete
+//also need to figure out why multiple persons are being deleted, it could be that they share the same id?
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -29,30 +31,21 @@ const App = () => {
   //2.18 changes-updating existing person with new add
   const addPerson = (event) => {
     event.preventDefault()
-    if (nameExists()) {
-      const result = window.confirm(`${newName} is already added to phonebook, replace old number with a new one?`)
-      const personToUpdate = persons.find(person=>person.name ===newName)
-        //there is a way to use the spread operator
-      if (result){
-        const personObject = {
-          name: newName,
-          number: newNumber,
-        }
-        personService.update(personToUpdate.id,personObject)
-      }
-    }
+
+    //returns first element or undefined
+    const existingPerson = persons.find(person => newName === person.name)
+    
   
-    else{
-    const personObject = {
+    if (existingPerson) {
+      return alert(`${newName} exists in phonebook`)
+    }
+    personService.create({
       name: newName,
-      number: newNumber,
-      id: persons.length + 1,
-    }
-  
-    //2.15 addition
-    personService.create(personObject)
-    setPersons(persons.concat(personObject))
-  }
+      number: newNumber   
+    }).then(addedPerson => {
+      setPersons(persons.concat(addedPerson))
+      })
+
     setNewName('')
     setNewNumber('')
   }//end addPerson
@@ -60,6 +53,7 @@ const App = () => {
  
   
   const removePerson = (id) =>{
+    console.log(persons)
     const personToDelete = persons.find(person => person.id = id)
  
     const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
@@ -81,10 +75,7 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const nameExists = () => {
-    return persons.find((person) => newName === person.name)
-  }
-
+ 
   return (
     <div>
       <p>2.18 - replace existing people</p>

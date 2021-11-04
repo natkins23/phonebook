@@ -3,11 +3,11 @@ const baseUrl = 'http://localhost:3001/persons'
 
 //1) use export default:
 
-// const getAll = () => axios.get(baseUrl)
+// const getAll = () => axios.get(baseUrl).then(res=>res.data)
 
-// const create = (newObject) => axios.post(baseUrl, newObject)
+// const create = (newObject) => axios.post(baseUrl, newObject).then(res=>res.data)
 
-// const update = (id, newObject) => axios.put(`${baseUrl}/${id}`, newObject)
+// const update = (id, newObject) => axios.put(`${baseUrl}/${id}`, newObject).then(res=>res.data)
 
 // const noteService = {
 //   getAll,
@@ -18,15 +18,15 @@ const baseUrl = 'http://localhost:3001/persons'
 // export default noteService
 
 //2 Named Export alternate
-export const getAll = () => axios.get(baseUrl)
+export const getAll = () => axios.get(baseUrl).then(res=>res.data)
 
-export const create = (newObject) => axios.post(baseUrl, newObject)
+export const create = (newObject) => axios.post(baseUrl, newObject).then(res=>res.data)
 
 export const update = (id, newObject) =>
-  axios.put(`${baseUrl}/${id}`, newObject)
+  axios.put(`${baseUrl}/${id}`, newObject).then(res=>res.data)
 
 export const deletePersron = id =>
-axios.delete(`${baseUrl}/${id}`)
+axios.delete(`${baseUrl}/${id}`).then(res=>res.data)
 
 //put in app.js
 //import * as notService from './services.persons'
