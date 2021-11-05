@@ -24,6 +24,8 @@ const notifyWith = (message, type='success') => {
       setNotification(null)
     }, 5000)
   }
+
+  
   const hook = () => {
     const eventHandler = (response) => {
       setPersons(response.data)
@@ -43,7 +45,7 @@ const notifyWith = (message, type='success') => {
     event.preventDefault()
 
     //returns first element or undefined
-    const existingPerson = persons.find(person => newName === person.name)
+    const existingPerson = persons.find(person => newName.trim() === person.name)
     
     //updated with 2.18 - update existing contact
     if (existingPerson) {
@@ -55,6 +57,8 @@ const notifyWith = (message, type='success') => {
         }).then(addedPerson => {
           setPersons(persons.map(person=>person.id !==existingPerson.id? person : addedPerson))
           notifyWith(`Changed number of  ${existingPerson.name}`)
+          setNewName('')
+          setNewNumber('')
           })
       }
       } else{
@@ -64,6 +68,8 @@ const notifyWith = (message, type='success') => {
         }).then(addedPerson => {
           setPersons(persons.concat(addedPerson))
           notifyWith(`Added  ${newName}`)
+          setNewName('')
+          setNewNumber('')
           })
           
       //     .catch(error => {
@@ -72,21 +78,26 @@ const notifyWith = (message, type='success') => {
       // })
 
     }
-    setNewName('')
-    setNewNumber('')
+
   }//end addPerson
 
  
   
   const removePerson = (id) =>{
-    console.log(persons)
     const personToDelete = persons.find(person => person.id = id)
  
     const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
     if(result){
-    personService.deletePersron(id)
-    setPersons(persons.filter(person =>person.id!==id))
+    personService.deletePersron(id).then(response =>{
+      setPersons(persons.filter(person =>person.id!==id))
+      notifyWith(`Removed ${personToDelete.name}`)
+      //2.20
+    }).catch(()=>{
+      //refresh the list of numbers
+      setPersons(persons.filter(person =>person.id!==id))
+      notifyWith(`${personToDelete.name} had already been removed`, 'error')})
   }
+  //.catch(e =>console.lol(e))
 }
   
 
