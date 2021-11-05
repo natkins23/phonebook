@@ -4,6 +4,8 @@ import * as personService from './services/persons'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import Notification from './components/Notification'
+
 
 //need to change addPerson so when i create a new Object that its not based off the lenght of the personObject, this is obsolete
 //also need to figure out why multiple persons are being deleted, it could be that they share the same id?
@@ -13,7 +15,15 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
+  const [notification,setNotification] = useState(null)
 
+  //2.19
+const notifyWith = (message, type='success') => {
+    setNotification({message,type})
+    setTimeout(() => {
+      setNotification(null)
+    }, 5000)
+  }
   const hook = () => {
     const eventHandler = (response) => {
       setPersons(response.data)
@@ -44,6 +54,7 @@ const App = () => {
           number: newNumber   
         }).then(addedPerson => {
           setPersons(persons.map(person=>person.id !==existingPerson.id? person : addedPerson))
+          notifyWith(`Changed number of  ${existingPerson.name}`)
           })
       }
       } else{
@@ -52,10 +63,15 @@ const App = () => {
           number: newNumber   
         }).then(addedPerson => {
           setPersons(persons.concat(addedPerson))
+          notifyWith(`Added  ${newName}`)
           })
-      }
+          
+      //     .catch(error => {
+      //       console.log(error.response.data.error)
+      //       notifyWith(`${error.response.data.error} `, 'error')
+      // })
 
-
+    }
     setNewName('')
     setNewNumber('')
   }//end addPerson
@@ -88,8 +104,9 @@ const App = () => {
  
   return (
     <div>
-      <p>2.18 - replace existing people</p>
+      <p>2.19 - notification</p>
       <h2> Phonebook </h2>
+      <Notification notification = {notification}/>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
 
       <h2> add a new </h2> 
