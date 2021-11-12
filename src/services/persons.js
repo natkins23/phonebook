@@ -1,6 +1,8 @@
 import axios from 'axios'
 //updated with 3.9
 const baseUrl = 'http://localhost:3001/api/persons'
+//3.10 - baseurl could be changed
+//const baseUrl = 'https://calm-bastion-54373.herokuapp.com/api/persons'
 
 //1) use export default:
 
