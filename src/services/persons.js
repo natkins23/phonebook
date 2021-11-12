@@ -1,5 +1,6 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/persons'
+//updated with 3.9
+const baseUrl = 'http://localhost:3001/api/persons'
 
 //1) use export default:
 

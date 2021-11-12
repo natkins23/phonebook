@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import * as personService from './services/persons'
 import Persons from './components/Persons'
 import Filter from './components/Filter'
@@ -25,14 +24,12 @@ const notifyWith = (message, type='success') => {
     }, 5000)
   }
 
-  
+//updated with 3.9
   const hook = () => {
-    const eventHandler = (response) => {
-      setPersons(response.data)
-    }
-    const promise = axios.get('http://localhost:3001/persons')
-    promise.then(eventHandler)
-  }
+    personService.getAll().then(personsResponse =>{
+      setPersons(personsResponse)
+  })
+}
   useEffect(hook, [])
 
   const peopleToShow =
