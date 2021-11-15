@@ -112,7 +112,7 @@ const notifyWith = (message, type='success') => {
  
   return (
     <div>
-      <p>test 3.11 - post build cp to backend / heroku</p>
+      <p>3.11 - post build cp to backend / heroku</p>
       <h2> Phonebook </h2>
       <Notification notification = {notification}/>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
