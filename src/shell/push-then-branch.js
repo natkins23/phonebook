@@ -1,6 +1,6 @@
 const {exec} = require('child_process')
 let args = process.argv
-let msg = args.slice(2).join(' ')
+let msg = args.slice(3).join(' ')
 let exercise = args.slice(2,3).join(' ')
 
 
