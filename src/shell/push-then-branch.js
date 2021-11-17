@@ -10,7 +10,7 @@ else{
     msg = `Exercise ${exercise} completed: ${msg}` 
      
 }
-console.log('Exercise:',msg)
+console.log(msg)
 //pushing changes
 console.log(`Nice job completing exercise ${exercise} saving your changes...`)
 

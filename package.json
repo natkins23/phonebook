@@ -21,7 +21,7 @@
     "server": "json-server -p3001 --watch db.json",
     "qpush": "node src/shell/push.js",
     "qbranch": "node src/shell/branch.js",
-    "qdeleteB": "node src/shell/elete.js",
+    "qdeleteB": "node src/shell/delete.js",
     "qPB": "node src/shell/push-then-branch.js"
   },
   "proxy": "http://localhost:3001",
