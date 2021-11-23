@@ -58,6 +58,9 @@ const notifyWith = (message, type='success') => {
           notifyWith(`Changed number of  ${existingPerson.name}`)
           setNewName('')
           setNewNumber('')
+          }).catch(error => {
+            // 3.20 - display mongoose error
+            notifyWith(`${error.response.data.error} `, 'error')
           })
       }
       } else{
@@ -69,6 +72,9 @@ const notifyWith = (message, type='success') => {
           notifyWith(`Added  ${name}`)
           setNewName('')
           setNewNumber('')
+          }).catch(error => {
+            // 3.20 - display mongoose error
+            notifyWith(`${error.response.data.error} `, 'error')
           })
     }
 
