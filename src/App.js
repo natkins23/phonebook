@@ -73,15 +73,13 @@ const notifyWith = (message, type='success') => {
           setNewName('')
           setNewNumber('')
           }).catch(error => {
-            // this is the way to access the error message
+            // 3.20 this is the way to access the error message
             notifyWith(`${error.response.data.error} `, 'error')
           })
     }
 
   }//end addPerson
 
- 
-  
   const removePerson = (id) =>{
     const personToDelete = persons.find(person => person.id = id)
  
@@ -96,10 +94,8 @@ const notifyWith = (message, type='success') => {
       setPersons(persons.filter(person =>person.id!==id))
       notifyWith(`${personToDelete.name} had already been removed`, 'error')})
   }
-  //.catch(e =>console.lol(e))
 }
   
-
   const handleNameInputChange = (event) => {
     setNewName(event.target.value)
   }
@@ -111,7 +107,6 @@ const notifyWith = (message, type='success') => {
     setNewFilter(event.target.value)
   }
 
- 
   return (
     <div>
       <p>3.12-3.18: MongoDB</p>
