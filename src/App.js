@@ -58,7 +58,7 @@ const notifyWith = (message, type='success') => {
           setNewName('')
           setNewNumber('')
           }).catch(error => {
-            // this is the way to access the error message
+            //  3.20 - display mongoose error
             notifyWith(`${error.response.data.error} `, 'error')
           })
       }
@@ -72,7 +72,7 @@ const notifyWith = (message, type='success') => {
           setNewName('')
           setNewNumber('')
           }).catch(error => {
-            // 3.20 this is the way to access the error message
+            // 3.20 - display mongoose error
             notifyWith(`${error.response.data.error} `, 'error')
           })
     }
