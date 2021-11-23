@@ -16,7 +16,8 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const [notification,setNotification] = useState(null)
 
-const {name, number} = {newName.trim(), newNumber.trim()}
+//destructured assignment - update to deal with trimming
+const {name, number} = {name:newName.trim(), number:newNumber.trim()}
   //2.19
 const notifyWith = (message, type='success') => {
     setNotification({message,type})
