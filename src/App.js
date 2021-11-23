@@ -58,7 +58,7 @@ const notifyWith = (message, type='success') => {
           setNewName('')
           setNewNumber('')
           }).catch(error => {
-            //  3.20 - display mongoose error
+            // 3.20 - display mongoose error
             notifyWith(`${error.response.data.error} `, 'error')
           })
       }
@@ -108,7 +108,7 @@ const notifyWith = (message, type='success') => {
 
   return (
     <div>
-      <p>3.12-3.18: MongoDB</p>
+      <p>3.20: MongoDB with mongoose</p>
       <h2> Phonebook </h2>
       <Notification notification = {notification}/>
       <Filter filter={newFilter} filterChange={handleFilterChange} />
