@@ -15,6 +15,8 @@ const App = () => {
   const [newFilter, setNewFilter] = useState('')
   const [notification,setNotification] = useState(null)
 
+//destructured assignment - update to deal with trimming
+const {name, number} = {name:newName.trim(), number:newNumber.trim()}
   //2.19
 const notifyWith = (message, type='success') => {
     setNotification({message,type})
@@ -41,44 +43,42 @@ const notifyWith = (message, type='success') => {
     event.preventDefault()
 
     //returns first element or undefined
-    const existingPerson = persons.find(person => newName.trim() === person.name)
+    const existingPerson = persons.find(person => name === person.name)
     
     //updated with 2.18 - update existing contact
     if (existingPerson) {
-      const result = window.confirm(`${newName} is already added to the phonebook, replace the old number with a new one?`)
+      const result = window.confirm(`${ name } is already added to the phonebook, replace the old number with a new one?`)
       if (result){
         personService.update(existingPerson.id,{
           name: existingPerson.name,
-          number: newNumber   
+          number: number   
         }).then(addedPerson => {
           setPersons(persons.map(person=>person.id !==existingPerson.id? person : addedPerson))
           notifyWith(`Changed number of  ${existingPerson.name}`)
           setNewName('')
           setNewNumber('')
+          }).catch(error => {
+            // this is the way to access the error message
+            notifyWith(`${error.response.data.error} `, 'error')
           })
       }
       } else{
         personService.create({
-          name: newName,
-          number: newNumber   
+          name: name,
+          number: number   
         }).then(addedPerson => {
           setPersons(persons.concat(addedPerson))
-          notifyWith(`Added  ${newName}`)
+          notifyWith(`Added  ${name}`)
           setNewName('')
           setNewNumber('')
+          }).catch(error => {
+            // 3.20 this is the way to access the error message
+            notifyWith(`${error.response.data.error} `, 'error')
           })
-          
-      //     .catch(error => {
-      //       console.log(error.response.data.error)
-      //       notifyWith(`${error.response.data.error} `, 'error')
-      // })
-
     }
 
   }//end addPerson
 
- 
-  
   const removePerson = (id) =>{
     const personToDelete = persons.find(person => person.id = id)
  
@@ -88,15 +88,13 @@ const notifyWith = (message, type='success') => {
       setPersons(persons.filter(person =>person.id!==id))
       notifyWith(`Removed ${personToDelete.name}`)
       //2.20
-    }).catch(()=>{
+    }).catch(error=>{
       //refresh the list of numbers
       setPersons(persons.filter(person =>person.id!==id))
       notifyWith(`${personToDelete.name} had already been removed`, 'error')})
   }
-  //.catch(e =>console.lol(e))
 }
   
-
   const handleNameInputChange = (event) => {
     setNewName(event.target.value)
   }
@@ -108,7 +106,6 @@ const notifyWith = (message, type='success') => {
     setNewFilter(event.target.value)
   }
 
- 
   return (
     <div>
       <p>3.12-3.18: MongoDB</p>
