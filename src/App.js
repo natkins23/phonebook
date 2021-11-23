@@ -5,7 +5,6 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Notification from './components/Notification'
 
-
 //need to change addPerson so when i create a new Object that its not based off the lenght of the personObject, this is obsolete
 //also need to figure out why multiple persons are being deleted, it could be that they share the same id?
 
