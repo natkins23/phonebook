@@ -9,131 +9,147 @@ import Notification from './components/Notification'
 //also need to figure out why multiple persons are being deleted, it could be that they share the same id?
 
 const App = () => {
-  const [persons, setPersons] = useState([])
-  const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
-  const [newFilter, setNewFilter] = useState('')
-  const [notification,setNotification] = useState(null)
+    const [persons, setPersons] = useState([])
+    const [newName, setNewName] = useState('')
+    const [newNumber, setNewNumber] = useState('')
+    const [newFilter, setNewFilter] = useState('')
+    const [notification, setNotification] = useState(null)
 
-//destructured assignment - update to deal with trimming
-const {name, number} = {name:newName.trim(), number:newNumber.trim()}
-  //2.19
-const notifyWith = (message, type='success') => {
-    setNotification({message,type})
-    setTimeout(() => {
-      setNotification(null)
-    }, 5000)
-  }
-
-//updated with 3.9
-  const hook = () => {
-    personService.getAll().then(personsResponse =>{
-      setPersons(personsResponse)
-  })
-}
-  useEffect(hook, [])
-
-  const peopleToShow =
-    newFilter.length > 0
-      ? persons.filter((person) => person.name.includes(newFilter))
-      : persons
-
-  //2.18 changes-updating existing person with new add
-  const addPerson = (event) => {
-    event.preventDefault()
-
-    //returns first element or undefined
-    const existingPerson = persons.find(person => name === person.name)
-    
-    //updated with 2.18 - update existing contact
-    if (existingPerson) {
-      const result = window.confirm(`${ name } is already added to the phonebook, replace the old number with a new one?`)
-      if (result){
-        personService.update(existingPerson.id,{
-          name: existingPerson.name,
-          number: number   
-        }).then(addedPerson => {
-          setPersons(persons.map(person=>person.id !==existingPerson.id? person : addedPerson))
-          notifyWith(`Changed number of  ${existingPerson.name}`)
-          setNewName('')
-          setNewNumber('')
-          }).catch(error => {
-            // 3.20 - display mongoose error
-            notifyWith(`${error.response.data.error} `, 'error')
-          })
-      }
-      } else{
-        personService.create({
-          name: name,
-          number: number   
-        }).then(addedPerson => {
-          setPersons(persons.concat(addedPerson))
-          notifyWith(`Added  ${name}`)
-          setNewName('')
-          setNewNumber('')
-          }).catch(error => {
-            // 3.20 - display mongoose error
-            notifyWith(`${error.response.data.error} `, 'error')
-          })
+    //destructured assignment - update to deal with trimming
+    const { name, number } = { name: newName.trim(), number: newNumber.trim() }
+    //2.19
+    const notifyWith = (message, type = 'success') => {
+        setNotification({ message, type })
+        setTimeout(() => {
+            setNotification(null)
+        }, 5000)
     }
 
-  }//end addPerson
+    //updated with 3.9
+    const hook = () => {
+        personService.getAll().then((personsResponse) => {
+            setPersons(personsResponse)
+        })
+    }
+    useEffect(hook, [])
 
-  const removePerson = (id) =>{
-    const personToDelete = persons.find(person => person.id = id)
- 
-    const result = window.confirm(`Are you sure you want to delete ${personToDelete.name}`)
-    if(result){
-    personService.deletePersron(id).then(response =>{
-      setPersons(persons.filter(person =>person.id!==id))
-      notifyWith(`Removed ${personToDelete.name}`)
-      //2.20
-    }).catch(error=>{
-      //refresh the list of numbers
-      setPersons(persons.filter(person =>person.id!==id))
-      notifyWith(`${personToDelete.name} had already been removed`, 'error')})
-  }
-}
-  
-  const handleNameInputChange = (event) => {
-    setNewName(event.target.value)
-  }
-  
-  const handleNumberInputChange = (event) => {
-    setNewNumber(event.target.value)
-  }
-  const handleFilterChange = (event) => {
-    setNewFilter(event.target.value)
-  }
+    const peopleToShow =
+        newFilter.length > 0
+            ? persons.filter((person) => person.name.includes(newFilter))
+            : persons
 
-  return (
-    <div>
-      <p>3.20: MongoDB with mongoose</p>
-      <h2> Phonebook </h2>
-      <Notification notification = {notification}/>
-      <Filter filter={newFilter} filterChange={handleFilterChange} />
+    //2.18 changes-updating existing person with new add
+    const addPerson = (event) => {
+        event.preventDefault()
 
-      <h2> add a new </h2> 
-      <PersonForm
-        name={newName}
-        nameChange={handleNameInputChange}
-        number={newNumber}
-        numberChange={handleNumberInputChange}
-        addPerson={addPerson}
-      />
-      <h2> Numbers </h2> 
-      <Persons 
-        persons={peopleToShow}  
-        removePerson = {removePerson}
-        />
-    </div>
-  )
+        //returns first element or undefined
+        const existingPerson = persons.find((person) => name === person.name)
+
+        //updated with 2.18 - update existing contact
+        if (existingPerson) {
+            const result = window.confirm(
+                `${name} is already added to the phonebook, replace the old number with a new one?`
+            )
+            if (result) {
+                personService
+                    .update(existingPerson.id, {
+                        name: existingPerson.name,
+                        number: number,
+                    })
+                    .then((addedPerson) => {
+                        setPersons(
+                            persons.map((person) =>
+                                person.id !== existingPerson.id
+                                    ? person
+                                    : addedPerson
+                            )
+                        )
+                        notifyWith(`Changed number of  ${existingPerson.name}`)
+                        setNewName('')
+                        setNewNumber('')
+                    })
+                    .catch((error) => {
+                        // 3.20 - display mongoose error
+                        notifyWith(`${error.response.data.error} `, 'error')
+                    })
+            }
+        } else {
+            personService
+                .create({
+                    name: name,
+                    number: number,
+                })
+                .then((addedPerson) => {
+                    setPersons(persons.concat(addedPerson))
+                    notifyWith(`Added  ${name}`)
+                    setNewName('')
+                    setNewNumber('')
+                })
+                .catch((error) => {
+                    // 3.20 - display mongoose error
+                    notifyWith(`${error.response.data.error} `, 'error')
+                })
+        }
+    } //end addPerson
+
+    const removePerson = (id) => {
+        const personToDelete = persons.find((person) => (person.id = id))
+
+        const result = window.confirm(
+            `Are you sure you want to delete ${personToDelete.name}`
+        )
+        if (result) {
+            personService
+                .deletePersron(id)
+                .then((response) => {
+                    setPersons(persons.filter((person) => person.id !== id))
+                    notifyWith(`Removed ${personToDelete.name}`)
+                    //2.20
+                })
+                .catch((error) => {
+                    //refresh the list of numbers
+                    setPersons(persons.filter((person) => person.id !== id))
+                    notifyWith(
+                        `${personToDelete.name} had already been removed`,
+                        'error'
+                    )
+                })
+        }
+    }
+
+    const handleNameInputChange = (event) => {
+        setNewName(event.target.value)
+    }
+
+    const handleNumberInputChange = (event) => {
+        setNewNumber(event.target.value)
+    }
+    const handleFilterChange = (event) => {
+        setNewFilter(event.target.value)
+    }
+
+    return (
+        <div>
+            <p>Part 4 - phonebook files refactored </p>
+            <h2> Phonebook </h2>
+            <Notification notification={notification} />
+            <Filter filter={newFilter} filterChange={handleFilterChange} />
+
+            <h2> add a new </h2>
+            <PersonForm
+                name={newName}
+                nameChange={handleNameInputChange}
+                number={newNumber}
+                numberChange={handleNumberInputChange}
+                addPerson={addPerson}
+            />
+            <h2> Numbers </h2>
+            <Persons persons={peopleToShow} removePerson={removePerson} />
+        </div>
+    )
 }
 
 export default App
-
-
-
 
 /* 2.17 precursor
 -moved components into components folder
